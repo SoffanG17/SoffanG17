@@ -12,14 +12,11 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
  Skeleton of a ContinuousIntegrationServer which acts as webhook
  See the Jetty documentation for API documentation of those classes.
  */
-public class ContinuousIntegrationServer extends AbstractHandler
-{
+public class ContinuousIntegrationServer extends AbstractHandler {
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
-                       HttpServletResponse response)
-            throws IOException, ServletException
-    {
+                       HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -34,9 +31,20 @@ public class ContinuousIntegrationServer extends AbstractHandler
         response.getWriter().println("CI job done");
     }
 
+    // Method for P1 below this line
+
+
+    // Method for P2 below this line
+
+
+    // Method for P3 below this line
+
+
+    // Method for handling history below
+
+
     // used to start the CI server in command line
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         Server server = new Server(8080);
         server.setHandler(new ContinuousIntegrationServer());
         server.start();
