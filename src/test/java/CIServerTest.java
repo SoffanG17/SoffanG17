@@ -55,7 +55,7 @@ public class CIServerTest{
     @Test
     void testSomethingRemaining() {
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> System.out.println("Throw!"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {throw new IllegalArgumentException();});
     }
 
 }
