@@ -2,11 +2,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
+import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.*;
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  Skeleton of a ContinuousIntegrationServer which acts as webhook
@@ -23,6 +30,8 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
         System.out.println(target);
 
+        ParseInput(request);
+
         // here you do all the continuous integration tasks
         // for example
         // 1st clone your repository
@@ -38,6 +47,26 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
 
     // Method for P3 below this line
+    public void ParseInput(HttpServletRequest request) throws java.io.IOException {
+
+        String rawJson = request.getReader().readLine();
+        System.out.println("Raw JSON: " + rawJson);
+        JSONObject reqJson = new JSONObject(rawJson);
+
+        String ref = reqJson.getString("ref");
+        String commitId = reqJson.getJSONObject("head_commit").getString("id");
+
+        //Check that there are tests
+
+        //Builds the build
+
+        //Tests the test
+
+        //Comment the commit
+
+
+    }
+
 
 
     // Method for handling history below
