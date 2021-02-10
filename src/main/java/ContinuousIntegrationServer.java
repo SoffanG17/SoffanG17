@@ -3,10 +3,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import com.opencsv.CSVReader;
 import org.eclipse.jetty.server.Server;
@@ -43,15 +40,95 @@ public class ContinuousIntegrationServer extends AbstractHandler {
     /*the CI server supports executing the automated tests of the group project.
     Testing is triggered as webhook, on the branch where the change has been made,
     as specified in the HTTP payload.*/
-    private void executeTests(String repoBaseDirPath) throws IOException {
+    public void executeTests(String repoBaseDirPath) throws IOException {
+        final String TEST_REPORT_FOLDER = repoBaseDirPath + "target/surefire-reports/";
+        final String CSV_COVERAGE_REPORT_PATH = repoBaseDirPath + "target/site/jacoco/jacoco.csv";
         final String CLASS_NAME_KEY = "CLASS";
         final String METHODS_MISSED_KEY = "METHOD_MISSED";
         final String METHODS_COVERED_KEY = "METHOD_COVERED";
 
+        // Execute tests
+
+        // https://mkyong.com/java/how-to-execute-shell-command-from-java/
+        // https://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html
+        File baseDir = new File(repoBaseDirPath);
+        File[] baseDirFiles = baseDir.listFiles();
+        boolean foundPOM = false;
+        if (baseDirFiles == null) {
+            System.out.println("Repo at " + repoBaseDirPath + " is empty! Aborting testing.");
+            return;
+        }
+        else {
+            for (File f : baseDirFiles) {
+                if (f.getName().equals("pom.xml")) {
+                    foundPOM = true;
+                    break;
+                }
+            }
+        }
+        if (!foundPOM) {
+            System.out.println("Repo at " + repoBaseDirPath + " contains no pom.xml! Aborting testing.");
+            return;
+        }
+        ProcessBuilder pb = new ProcessBuilder();
+        pb.directory(new File(repoBaseDirPath));
+        pb.command("bash", "-c", "mvn test");
+
+        try {
+            Process process = pb.start();
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                System.out.println("Success for ProcessBuilder process!");
+            } else {
+                System.out.println("Exited ProcessBuilder process abnormally. Exit val: " + exitVal);
+            }
+        } catch (IOException e) {
+            System.out.println("IO exception when trying to execute ProcessBuilder process");
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted exception when trying to execute ProcessBuilder process");
+            e.printStackTrace();
+        }
+        ArrayList<String> testResults = new ArrayList<>();
+        try {
+            File dir = new File(TEST_REPORT_FOLDER);
+            File[] files = dir.listFiles();
+            if (files == null) {
+                System.out.println("No test reports found!");
+            }
+            else {
+                for (File f:files) {
+                    // Only read the plain text reports
+                    if (!f.getName().toLowerCase().endsWith(".txt")) continue;
+                    StringBuilder sb = new StringBuilder();
+                    Scanner scanner = new Scanner(f);
+                    while (scanner.hasNextLine()) {
+                        sb.append(scanner.nextLine());
+                        sb.append("\n");
+                    }
+                    scanner.close();
+                    testResults.add(sb.toString());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error when trying to find test report files. Supplied path:\n" +
+                TEST_REPORT_FOLDER);
+            e.printStackTrace();
+        }
+        if (!testResults.isEmpty()) {
+            System.out.println("-------------------------------------Test results-------------------------------------");
+            for (String s: testResults) {
+                System.out.println(s);
+            }
+        }
+        else {
+            System.out.println("-------------------------------------No test results to present-------------------------------------");
+        }
+
         // Branch coverage
         // https://www.baeldung.com/java-csv-file-array
         List<List<String>> records = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(repoBaseDirPath + "/target/site/jacoco/jacoco.csv"))) {
+        try (CSVReader csvReader = new CSVReader(new FileReader(CSV_COVERAGE_REPORT_PATH))) {
             String[] values = null;
             while ((values = csvReader.readNext()) != null) {
                 records.add(Arrays.asList(values));
@@ -59,11 +136,11 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         }
         catch (FileNotFoundException e) {
             System.out.println("Could not find file for branch coverage. Supplied path:\n" +
-                repoBaseDirPath + "/target/site/jacoco/jacoco.csv");
+                CSV_COVERAGE_REPORT_PATH);
         }
         catch (IOException e) {
             System.out.println("IOException when trying to read file for branch coverage. Supplied path:\n" +
-                repoBaseDirPath + "/target/site/jacoco/jacoco.csv");
+                CSV_COVERAGE_REPORT_PATH);
         }
         if (records.size() != 2) {
             throw new IOException("Unexpected input from branch coverage report. Expected a CSV file with " +
@@ -93,7 +170,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         server.start();
         server.join();*/
         ContinuousIntegrationServer ciServer = new ContinuousIntegrationServer();
-        ciServer.executeTests(".");
+        ciServer.executeTests("./");
     }
 }
 
