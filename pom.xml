@@ -41,6 +41,12 @@
             <version>1.7.12</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- To read CSV files, like reports from jacoco-maven-plugin -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -61,6 +67,26 @@
                     <executable>maven</executable>
                     <mainClass>ContinuousIntegrationServer</mainClass>
                 </configuration>
+            </plugin>
+            <!-- Code Coverage report generation -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-code-coverage-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
