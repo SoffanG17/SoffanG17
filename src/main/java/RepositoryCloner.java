@@ -2,7 +2,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import java.io.File;
 import java.io.IOException;
-
+import org.apache.commons.io.FileUtils;
 
 public class RepositoryCloner {
     
@@ -27,6 +27,19 @@ public class RepositoryCloner {
             return null;
         }
 
+    }
+
+    public static void deleteRepo(File repo){
+        if(!repo.isDirectory()){
+            throw new IllegalArgumentException("Repo does not exist on this directory ");
+        }
+        try{
+            FileUtils.deleteDirectory(repo);
+        }catch(Exception e) {
+            System.out.println("The repo could not be deleted");
+        }
+        System.out.println("The repo is deleted");
+        return;
     }
 
 
