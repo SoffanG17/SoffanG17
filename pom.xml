@@ -17,9 +17,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.aggregate</groupId>
-            <artifactId>jetty-all</artifactId>
-            <version>7.0.2.v20100331</version>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>11.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20201115</version>
         </dependency>
         <!-- Javax servlet could be included as a dependency
          but appears to be redundant, presumably jetty already has it
@@ -59,7 +64,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <executable>maven</executable>
-                    <mainClass>ContinuousIntegrationServer</mainClass>
+                    <mainClass>Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
