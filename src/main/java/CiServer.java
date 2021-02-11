@@ -18,10 +18,12 @@ import java.util.concurrent.TimeoutException;
 
 public class CiServer {
 
+    private ApiClient apiClient;
     private Server server;
 
 
     CiServer(int port) throws Exception {
+        apiClient = new ApiClient();
 
         // Create and configure a ThreadPool.
         QueuedThreadPool threadPool = new QueuedThreadPool();
@@ -54,14 +56,12 @@ public class CiServer {
 
             System.out.println(target);
 
+
             try {
                 ParseInput(request);
-            }catch (Exception e){
-                System.out.println("Json wasn't as expected");
-                System.out.println(e);
-            }
-
-
+            } catch (Exception e) {
+                e.printStackTrace();
+            } 
             response.getWriter().println("CI job done");
         }
 
@@ -71,12 +71,13 @@ public class CiServer {
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
+            String commitId = reqJson.getJSONObject("head_commit").getString("id");
             String ref = reqJson.getString("ref");
             String cloneURL = reqJson.getJSONObject("repository").getString("clone_url");
             String repoName = reqJson.getJSONObject("repository").getString("name");
-            //String commitId = reqJson.getJSONObject("head_commit").getString("id");
             String branch = RepoUtils.getBranch(ref);
             RepositoryCloner.cloneRepo(cloneURL , branch, repoName);
+
 
             //Check that there are tests
 
@@ -85,7 +86,11 @@ public class CiServer {
             //Tests the test
 
             //Comment the commit
-
+            try{
+                apiClient.comment(commitId, "Test-comment from server :)");
+            }catch (Exception e){
+                System.out.println(e);
+            }
 
         }
 
