@@ -1,4 +1,3 @@
-package main.java;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
