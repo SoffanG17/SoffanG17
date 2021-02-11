@@ -24,7 +24,7 @@ public class RepositoryCloner {
             return tempDirectoryPath;
         }catch (Exception e){
             System.out.println("Repo could not be cloned");
-            return null;
+            return "";
         }
 
     }
