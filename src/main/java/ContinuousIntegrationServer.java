@@ -46,6 +46,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         final String CLASS_NAME_KEY = "CLASS";
         final String METHODS_MISSED_KEY = "METHOD_MISSED";
         final String METHODS_COVERED_KEY = "METHOD_COVERED";
+        printPWD(repoBaseDirPath);
 
         // Execute tests
 
@@ -55,7 +56,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         File[] baseDirFiles = baseDir.listFiles();
         boolean foundPOM = false;
         if (baseDirFiles == null) {
-            System.out.println("Repo at " + repoBaseDirPath + " is empty! Aborting testing.");
+            System.out.println("The path of " + repoBaseDirPath + " is wrong or the repo is empty! Aborting testing.");
             return;
         }
         else {
@@ -135,7 +136,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             }
         }
         catch (FileNotFoundException e) {
-            System.out.println("Could not find file for branch coverage. Supplied path:\n" +
+            System.out.println("Could not find file for method coverage. Supplied path:\n" +
                 CSV_COVERAGE_REPORT_PATH);
         }
         catch (IOException e) {
@@ -143,7 +144,7 @@ public class ContinuousIntegrationServer extends AbstractHandler {
                 CSV_COVERAGE_REPORT_PATH);
         }
         if (records.size() != 2) {
-            throw new IOException("Unexpected input from branch coverage report. Expected a CSV file with " +
+            throw new IOException("Unexpected input from method coverage report. Expected a CSV file with " +
                 "one line of identifiers and one line of values. Received " + records.size() + " lines.");
         }
         HashMap<String, String> reportMap = new HashMap<>();
@@ -154,6 +155,30 @@ public class ContinuousIntegrationServer extends AbstractHandler {
             "by tests is: " + reportMap.get(METHODS_COVERED_KEY) + ",\n" +
             "and the number of methods not covered by tests is: " + reportMap.get(METHODS_MISSED_KEY));
 
+    }
+
+    private void printPWD(String path) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder();
+            pb.directory(new File(path));
+            pb.command("bash", "-c", "pwd");
+            Process process = pb.start();
+            StringBuilder output = new StringBuilder();
+
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line);
+                output.append("\n");
+            }
+            System.out.println("PWD of the supplied path is:");
+            System.out.println(output);
+        }
+        catch (Exception e) {
+            System.out.println("Error in printing PWD. Perhaps the path was non-existent.");
+        }
     }
 
 
