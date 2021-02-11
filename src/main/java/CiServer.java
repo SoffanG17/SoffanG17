@@ -17,10 +17,12 @@ import java.util.concurrent.TimeoutException;
 
 public class CiServer {
 
+    private ApiClient apiClient;
     private Server server;
 
 
     CiServer(int port) throws Exception {
+        apiClient = new ApiClient();
 
         // Create and configure a ThreadPool.
         QueuedThreadPool threadPool = new QueuedThreadPool();
@@ -53,11 +55,15 @@ public class CiServer {
 
             System.out.println(target);
 
+
             try {
                 ParseInput(request);
-            }catch (Exception e){
-                System.out.println("Json wasn't as expected");
-                System.out.println(e);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
             }
 
 
@@ -70,8 +76,14 @@ public class CiServer {
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
-            String ref = reqJson.getString("ref");
-            //String commitId = reqJson.getJSONObject("head_commit").getString("id");
+            try{
+                String ref = reqJson.getString("ref");
+                String commitId = reqJson.getJSONObject("head_commit").getString("id");
+
+            }catch (Exception e){
+                System.out.println("Json wasn't as expected");
+                System.out.println(e);
+            }
 
             //Check that there are tests
 
@@ -80,7 +92,11 @@ public class CiServer {
             //Tests the test
 
             //Comment the commit
-
+            try{
+                apiClient.comment("id", "Test-comment from server :)");
+            }catch (Exception e){
+                System.out.println(e);
+            }
 
         }
 
