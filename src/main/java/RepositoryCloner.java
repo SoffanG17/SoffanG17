@@ -5,14 +5,14 @@ import java.io.IOException;
 
 
 public class RepositoryCloner {
+    
+    private static final String tempDirectoryPath = "clonedRepo";
 
     public static void main (String[] args) throws IOException, GitAPIException {
 
         cloneRepo("https://github.com/snissy/Sandbox.git","");
         System.out.print("asd");
     }
-
-    private static final String tempDirectoryPath = "clonedRepo";
 
     static String cloneRepo(String repoHttpsAdress , String branchName) throws IOException, GitAPIException {
 
