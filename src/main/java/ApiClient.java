@@ -41,9 +41,6 @@ public class ApiClient {
     }
 
     public void comment(String id, String comment) throws InterruptedException, ExecutionException, TimeoutException, IOException {
-        //AuthenticationStore auth = client.getAuthenticationStore();
-        //URI uri = URI.create("https://api.github.com/repos/Sebberh/Test/commits/master");
-        //auth.addAuthenticationResult(new BasicAuthentication.BasicResult(uri, "Sebberh", "fa6f4323dc61100847665ebd56fc117164c2e710"));
 
         org.eclipse.jetty.client.api.Request clientReq = client.newRequest("https://api.github.com/repos/SoffanG17/SoffanG17/commits/" + id + "/comments");
         clientReq.method(HttpMethod.POST)
@@ -51,11 +48,8 @@ public class ApiClient {
                 .header("Accept", "application/vnd.github.v3+json")
                 .body(new StringRequestContent("{\"body\":\"" + comment + "\"}"))
         ;
-        //System.out.println("Headers: \n" + clientReq.getHeaders());
-        //System.out.println("Body: \n" + clientReq.getBody());
 
         ContentResponse contResp = clientReq.send();
-        //System.out.println(contResp.getHeaders());
         System.out.println(contResp.getContentAsString());
 
 

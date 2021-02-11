@@ -76,13 +76,17 @@ public class CiServer {
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
+            String ref = "";
+            String commitId = "";
             try{
-                String ref = reqJson.getString("ref");
-                String commitId = reqJson.getJSONObject("head_commit").getString("id");
+                ref = reqJson.getString("ref");
+                commitId = reqJson.getJSONObject("head_commit").getString("id");
+                System.out.println("Id: " + commitId);
 
             }catch (Exception e){
                 System.out.println("Json wasn't as expected");
                 System.out.println(e);
+                return;
             }
 
             //Check that there are tests
@@ -93,7 +97,7 @@ public class CiServer {
 
             //Comment the commit
             try{
-                apiClient.comment("id", "Test-comment from server :)");
+                apiClient.comment(commitId, "Test-comment from server :)");
             }catch (Exception e){
                 System.out.println(e);
             }
