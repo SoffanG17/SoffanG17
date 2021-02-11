@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-client</artifactId>
+            <artifactId>jetty-server</artifactId>
             <version>11.0.0</version>
         </dependency>
         <dependency>
@@ -64,7 +64,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <executable>maven</executable>
-                    <mainClass>ContinuousIntegrationServer</mainClass>
+                    <mainClass>Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
