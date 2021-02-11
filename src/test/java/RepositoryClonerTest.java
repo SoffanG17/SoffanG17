@@ -34,6 +34,27 @@ class RepositoryClonerTest {
         Assertions.assertFalse(dir.isDirectory());
     }
 
+    /**
+     * Tests whether the method RepositoryCloner.deleteRepo() works by checking
+     * if the directory of the repo does not exist.
+     * @throws IOException
+     * @throws GitAPIException
+     */
+    @Test
+    void deleteRepoTest() throws IOException, GitAPIException {
+        File dir = new File("clonedRepo");
+        RepositoryCloner.deleteRepo(dir);
+        Assertions.assertFalse(dir.isDirectory());
+    }
 
+    /**
+     * Tests whether the method RepositoryCloner.deleteRepo() throws exception when
+     * the dir does not exist.
+     */
+    @Test
+    void deleteIllegalArgument() throws IOException, GitAPIException {
+        File dir = new File("clonedRepo2");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> RepositoryCloner.deleteRepo(dir));
+    }
 }
 
