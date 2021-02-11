@@ -20,7 +20,7 @@ public class RepositoryCloner {
                     setDirectory(new File(tempDirectoryPath)).
                     call();
 
-            System.out.println((okCloning ? "Successful " : "Unsuccessful ") + "cloning of repo: " + repoHttpsAdress);
+            System.out.println("Successful cloning of repo: " + repoHttpsAdress);
             return tempDirectoryPath;
         }catch (Exception e){
             System.out.println("Repo could not be cloned");
