@@ -8,35 +8,26 @@ public class RepositoryCloner {
     
     private static final String tempDirectoryPath = "clonedRepo";
 
-    public static void main (String[] args) throws IOException, GitAPIException {
+    static String cloneRepo(String repoHttpsAdress , String branchName, String repoName) throws IOException, GitAPIException {
 
-        cloneRepo("https://github.com/snissy/Sandbox.git","");
-        System.out.print("asd");
-    }
+        try {
+            File tempDirectory  = new File(repoName);
+            boolean okCloning = true;
 
-    static String cloneRepo(String repoHttpsAdress , String branchName) throws IOException, GitAPIException {
+            Git git = Git.cloneRepository().
+                    setURI(repoHttpsAdress).
+                    setBranch(branchName).
+                    setDirectory(new File(tempDirectoryPath)).
+                    call();
 
-        createTempDirectory();
-        boolean okCloning = true;
-
-        Git git = Git.cloneRepository().
-                setURI(repoHttpsAdress).
-                setBranch(branchName).
-                setDirectory(new File(tempDirectoryPath)).
-                call();
-
-        System.out.println((okCloning ? "Successful ":"Unsuccessful ") + "cloning of repo: " + repoHttpsAdress);
-        return tempDirectoryPath;
-
-    }
-
-    static void createTempDirectory() throws IOException {
-
-        File tempDirectory  = new File(tempDirectoryPath);
-    }
-
-    static void removeTempDirectory(){
+            System.out.println((okCloning ? "Successful " : "Unsuccessful ") + "cloning of repo: " + repoHttpsAdress);
+            return tempDirectoryPath;
+        }catch (Exception e){
+            System.out.println("Repo could not be cloned");
+            return null;
+        }
 
     }
+
 
 }
