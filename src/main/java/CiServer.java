@@ -1,12 +1,15 @@
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.maven.RepositoryUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -56,36 +59,25 @@ public class CiServer {
 
             try {
                 ParseInput(request);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            }
-
-
+            } 
             response.getWriter().println("CI job done");
         }
 
-        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException {
 
             String rawJson = request.getReader().readLine();
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
-            String ref = "";
-            String commitId = "";
-            try{
-                ref = reqJson.getString("ref");
-                commitId = reqJson.getJSONObject("head_commit").getString("id");
-                System.out.println("Id: " + commitId);
+            String commitId = reqJson.getJSONObject("head_commit").getString("id");
+            String ref = reqJson.getString("ref");
+            String cloneURL = reqJson.getJSONObject("repository").getString("clone_url");
+            String repoName = reqJson.getJSONObject("repository").getString("name");
+            String branch = RepoUtils.getBranch(ref);
+            RepositoryCloner.cloneRepo(cloneURL , branch, repoName);
 
-            }catch (Exception e){
-                System.out.println("Json wasn't as expected");
-                System.out.println(e);
-                return;
-            }
 
             //Check that there are tests
 
