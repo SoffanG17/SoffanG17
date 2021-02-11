@@ -1,14 +1,15 @@
-package main.java;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.maven.RepositoryUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -64,14 +65,18 @@ public class CiServer {
             response.getWriter().println("CI job done");
         }
 
-        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException {
+        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException {
 
             String rawJson = request.getReader().readLine();
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
             String ref = reqJson.getString("ref");
+            String cloneURL = reqJson.getJSONObject("repository").getString("clone_url");
+            String repoName = reqJson.getJSONObject("repository").getString("name");
             //String commitId = reqJson.getJSONObject("head_commit").getString("id");
+            String branch = RepoUtils.getBranch(ref);
+            RepositoryCloner.cloneRepo(cloneURL , branch, repoName);
 
             //Check that there are tests
 
