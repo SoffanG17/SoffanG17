@@ -37,9 +37,12 @@ public class ContinuousIntegrationServer extends AbstractHandler {
 
 
     // Method for P2 below this line
-    /*the CI server supports executing the automated tests of the group project.
-    Testing is triggered as webhook, on the branch where the change has been made,
-    as specified in the HTTP payload.*/
+    /**
+     * Executes the test cases of a Maven project with root at the specified directory. Returns a report of tests
+     * results. If all tests pass the report additionally show method coverage of the tests.
+     * @param repoBaseDirPath The root of the Maven project to execute test for.
+     * @return report of test results.
+     */
     public String executeTests(String repoBaseDirPath) {
         final String TEST_REPORT_FOLDER = repoBaseDirPath + "target/surefire-reports/";
         final String CSV_COVERAGE_REPORT_PATH = repoBaseDirPath + "target/site/jacoco/jacoco.csv";
@@ -168,6 +171,10 @@ public class ContinuousIntegrationServer extends AbstractHandler {
         return finalReportSB.toString();
     }
 
+    /**
+     * Prints the absolute path to the supplied directory, like the bash command PWD.
+     * @param path what folder to execute a PWD-like command from.
+     */
     private void printPWD(String path) {
         try {
             ProcessBuilder pb = new ProcessBuilder();
