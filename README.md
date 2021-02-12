@@ -39,10 +39,10 @@ Issue-#[issueNr]-[Title]
 Add "Closes #[issueNr]" to the description or link the issue manually in the GUI.
 
 ##### Statement of contributions:
-Communicating with Github API
-Remaking code skelleton with updated libs
-Documentation & tests
 ###### Sebastian Fagerlind
+Communicating with GitHub API
+Remaking code skeleton with updated libs
+Documentation & tests
 
 
 ###### Eleonora Borzi
@@ -52,4 +52,3 @@ Documentation & tests
 
 
 ###### Nils Merkel
-
