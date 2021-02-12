@@ -5,22 +5,21 @@ a commit message. The URL for the HTTP requests is acquired through use of ngrok
 
 #### Run the Continuous Integration server
 ```
-javac -cp servlet-api-2.5.jar:jetty-all-7.0.2.v20100331.jar ContinuousIntegrationServer.java
-java -cp .:servlet-api-2.5.jar:jetty-all-7.0.2.v20100331.jar ContinuousIntegrationServer
-./ngrok http 8080
+cd [your project root path]
+mvn compile
+mvn exec:java
+ngrok http 8080
 ```
-
-Create a file named with your personal access token on the first row and put it in src/main/java/.
+Create a file named token.txt with your personal access token on the first row and put it in src/main/java/.
 How to create a token:
 https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
 
+
+
 ##### Dependancies
 - Java 15
-- Jupiter JUNIT 5.0
-- Jetty Server 11
-- Jetty Client 11
-- Javax servlet 2.5
-- ngrok
+- Maven 3.6.3
+- ngrok 2.3.35
 
 ##### Commit template
 Issue-#[issueNr]-[Feat/Fix/Doc/Refac]-[Title]
@@ -39,16 +38,28 @@ Issue-#[issueNr]-[Title]
 Add "Closes #[issueNr]" to the description or link the issue manually in the GUI.
 
 ##### Statement of contributions:
-###### Sebastian Fagerlind
-Communicating with GitHub API
-Remaking code skeleton with updated libs
-Documentation & tests
 
+###### Sebastian Fagerlind
+- Communicating with GitHub API
+- Remaking code skeleton with updated libs
+- Documentation & tests
 
 ###### Eleonora Borzi
-P1
+- Coding
+- Testing
+- Build automation
+- P1
 
 ###### Henrik Kultala
-
+- Github management
+- Supervisor
+- Wrangling Maven
+- Test automation
+- Coding
+- Testing
 
 ###### Nils Merkel
+- Coding
+- Testing
+- Build automation
+- P1
