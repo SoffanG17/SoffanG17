@@ -10,10 +10,15 @@ java -cp .:servlet-api-2.5.jar:jetty-all-7.0.2.v20100331.jar ContinuousIntegrati
 ./ngrok http 8080
 ```
 
+Create a file named with your personal access token on the first row and put it in src/main/java/.
+How to create a token:
+https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
+
 ##### Dependancies
 - Java 15
 - Jupiter JUNIT 5.0
-- Jetty 7.0.2.v20100331
+- Jetty Server 11
+- Jetty Client 11
 - Javax servlet 2.5
 - ngrok
 
@@ -34,8 +39,10 @@ Issue-#[issueNr]-[Title]
 Add "Closes #[issueNr]" to the description or link the issue manually in the GUI.
 
 ##### Statement of contributions:
-
 ###### Sebastian Fagerlind
+Communicating with GitHub API
+Remaking code skeleton with updated libs
+Documentation & tests
 
 
 ###### Eleonora Borzi
@@ -45,4 +52,3 @@ P1
 
 
 ###### Nils Merkel
-
