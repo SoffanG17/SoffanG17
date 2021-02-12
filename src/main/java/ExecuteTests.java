@@ -124,17 +124,23 @@ public class ExecuteTests {
             finalReportSB.append(CSV_COVERAGE_REPORT_PATH);
             return finalReportSB.toString();
         }
-        if (records.size() != 2) {
+        if (records.size() < 2) {
             throw new IllegalArgumentException("Unexpected input from method coverage report. Expected a CSV file with " +
-                "one line of identifiers and one line of values. Received " + records.size() + " lines.");
+                "one line of identifiers and at least one line of values. Received " + records.size() + " lines.");
         }
-        HashMap<String, String> reportMap = new HashMap<>();
-        for (int i = 0; i < records.get(0).size(); i++) {
-            reportMap.put(records.get(0).get(i), records.get(1).get(i));
+        List<HashMap<String, String>> reportMaps = new ArrayList<>();
+        for (int i = 1; i < records.size(); i++) {
+            reportMaps.add(new HashMap<>());
+            for (int j = 0; j < records.get(0).size(); j++) {
+                reportMaps.get(i-1).put(records.get(0).get(j), records.get(i).get(j));
+            }
         }
-        finalReportSB.append("In the class ").append(reportMap.get(CLASS_NAME_KEY)).append(" the number of methods covered ")
-            .append("by tests is: ").append(reportMap.get(METHODS_COVERED_KEY)).append(",\n")
-            .append("and the number of methods not covered by tests is: ").append(reportMap.get(METHODS_MISSED_KEY));
+        for (int i = 0; i < reportMaps.size(); i++) {
+            finalReportSB.append("In the class ").append(reportMaps.get(i).get(CLASS_NAME_KEY)).append(" the number of methods covered ")
+                .append("by tests is: ").append(reportMaps.get(i).get(METHODS_COVERED_KEY)).append(",\n")
+                .append("and the number of methods not covered by tests is: ").append(reportMaps.get(i).get(METHODS_MISSED_KEY));
+        }
+
         return finalReportSB.toString();
     }
 
