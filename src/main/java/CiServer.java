@@ -70,11 +70,16 @@ public class CiServer {
         public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException, MavenInvocationException {
 
             String rawJson = request.getReader().readLine();
+            if(!rawJson.contains("head_commit")) {
+                return;
+            }
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
+
             String commitId = reqJson.getJSONObject("head_commit").getString("id");
             String ref = reqJson.getString("ref");
+
             String cloneURL = reqJson.getJSONObject("repository").getString("clone_url");
             String repoName = reqJson.getJSONObject("repository").getString("name");
             String branch = RepoUtils.getBranch(ref);
@@ -95,11 +100,12 @@ public class CiServer {
 
             //Comment the commit
             try{
+
                 apiClient.comment(commitId, buildResult);
             }catch (Exception e){
-                System.out.println(e);
+                System.out.println("Error:"+e);
             }
-            //RepositoryCloner.deleteRepo(new File(RepositoryCloner.tempDirectoryPath));
+            RepositoryCloner.deleteRepo(new File(RepositoryCloner.tempDirectoryPath));
 
         }
 
