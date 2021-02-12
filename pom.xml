@@ -17,9 +17,19 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.aggregate</groupId>
-            <artifactId>jetty-all</artifactId>
-            <version>7.0.2.v20100331</version>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>11.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+            <version>11.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20201115</version>
         </dependency>
         <!-- Javax servlet could be included as a dependency
          but appears to be redundant, presumably jetty already has it
@@ -38,14 +48,18 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.12</version>
-            <scope>runtime</scope>
+            <version>2.0.0-alpha0</version>
         </dependency>
         <!-- To read CSV files, like reports from jacoco-maven-plugin -->
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>5.10.0.202012080955-r</version>
         </dependency>
     </dependencies>
 
@@ -65,7 +79,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <executable>maven</executable>
-                    <mainClass>ContinuousIntegrationServer</mainClass>
+                    <mainClass>Main</mainClass>
                 </configuration>
             </plugin>
             <!-- Code Coverage report generation -->
