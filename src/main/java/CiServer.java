@@ -95,9 +95,12 @@ public class CiServer {
             if(buildResult.equals("Build Success")){
 
                 // Do the test
+                buildResult += ExecuteTests.executeTests(RepositoryCloner.tempDirectoryPath+"/");
             }
-            //Tests the test
 
+            System.out.println(buildResult);
+            buildResult = buildResult.replace("\n", "\\n");
+            System.out.println(buildResult);
             //Comment the commit
             try{
 
