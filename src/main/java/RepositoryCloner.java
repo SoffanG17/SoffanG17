@@ -1,12 +1,13 @@
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 public class RepositoryCloner {
     
-    private static final String tempDirectoryPath = "clonedRepo";
+    public static final String tempDirectoryPath = "clonedRepo";
 
     static String cloneRepo(String repoHttpsAdress , String branchName, String repoName) throws IOException, GitAPIException {
 
