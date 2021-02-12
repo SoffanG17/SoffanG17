@@ -14,17 +14,6 @@ public class CIServerTest{
         Assertions.assertTrue(true);
     }
 
-    // Tests for P2 below (remember to make multiple methods for multiple test cases)
-
-    /**
-     * DOC
-     */
-    @Test
-    void testP2Something() {
-
-        Assertions.assertFalse(false);
-    }
-
     // Tests for P3 below (remember to make multiple methods for multiple test cases)
 
     /**
