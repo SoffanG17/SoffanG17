@@ -36,7 +36,7 @@ Add "Closes #[issueNr]" to the description or link the issue manually in the GUI
 ##### Statement of contributions:
 
 ###### Sebastian Fagerlind 
-testing
+
 
 ###### Eleonora Borzi
 P1
