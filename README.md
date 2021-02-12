@@ -39,7 +39,7 @@ Add "Closes #[issueNr]" to the description or link the issue manually in the GUI
 
 
 ###### Eleonora Borzi
-
+P1
 
 ###### Henrik Kultala
 
