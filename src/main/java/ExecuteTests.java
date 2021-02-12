@@ -90,7 +90,7 @@ public class ExecuteTests {
             return "Error when trying to find test report files. Supplied path:\n" + TEST_REPORT_FOLDER;
         }
         if (!testResults.isEmpty()) {
-            finalReportSB.append("----------------------------------Test results---------------------------------\n");
+            finalReportSB.append("\n----------------------------------Test results---------------------------------\n");
             for (String s: testResults) {
                 finalReportSB.append(s);
                 finalReportSB.append("\n");
@@ -136,9 +136,9 @@ public class ExecuteTests {
             }
         }
         for (int i = 0; i < reportMaps.size(); i++) {
-            finalReportSB.append("In the class ").append(reportMaps.get(i).get(CLASS_NAME_KEY)).append(" the number of methods covered ")
+            finalReportSB.append("\nIn the class ").append(reportMaps.get(i).get(CLASS_NAME_KEY)).append(" the number of methods covered ")
                 .append("by tests is: ").append(reportMaps.get(i).get(METHODS_COVERED_KEY)).append(",\n")
-                .append("and the number of methods not covered by tests is: ").append(reportMaps.get(i).get(METHODS_MISSED_KEY));
+                .append("and the number of methods not covered by tests is: ").append(reportMaps.get(i).get(METHODS_MISSED_KEY)).append("\n");
         }
 
         return finalReportSB.toString();
