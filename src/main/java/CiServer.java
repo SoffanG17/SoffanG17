@@ -3,6 +3,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.maven.RepositoryUtils;
+import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -12,6 +13,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -65,14 +67,19 @@ public class CiServer {
             response.getWriter().println("CI job done");
         }
 
-        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException {
+        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException, MavenInvocationException {
 
             String rawJson = request.getReader().readLine();
+            if(!rawJson.contains("head_commit")) {
+                return;
+            }
             System.out.println("Raw JSON: " + rawJson);
             JSONObject reqJson = new JSONObject(rawJson);
 
+
             String commitId = reqJson.getJSONObject("head_commit").getString("id");
             String ref = reqJson.getString("ref");
+
             String cloneURL = reqJson.getJSONObject("repository").getString("clone_url");
             String repoName = reqJson.getJSONObject("repository").getString("name");
             String branch = RepoUtils.getBranch(ref);
@@ -80,17 +87,25 @@ public class CiServer {
 
 
             //Check that there are tests
-
+            String comment = "";
             //Builds the build
+            System.out.println(RepositoryCloner.tempDirectoryPath+"/pom.xml");
+            String buildResult = Compiler.compileMavenProject(RepositoryCloner.tempDirectoryPath+"/pom.xml");
 
+            if(buildResult.equals("Build Success")){
+
+                // Do the test
+            }
             //Tests the test
 
             //Comment the commit
             try{
-                apiClient.comment(commitId, "Test-comment from server :)");
+
+                apiClient.comment(commitId, buildResult);
             }catch (Exception e){
-                System.out.println(e);
+                System.out.println("Error:"+e);
             }
+            RepositoryCloner.deleteRepo(new File(RepositoryCloner.tempDirectoryPath));
 
         }
 
