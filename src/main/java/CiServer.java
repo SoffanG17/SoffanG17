@@ -89,7 +89,7 @@ public class CiServer {
             //Check that there are tests
             String comment = "";
             //Builds the build
-            System.out.println(RepositoryCloner.tempDirectoryPath+"/pom.xml")
+            System.out.println(RepositoryCloner.tempDirectoryPath+"/pom.xml");
             String buildResult = Compiler.compileMavenProject(RepositoryCloner.tempDirectoryPath+"/pom.xml");
 
             if(buildResult.equals("Build Success")){
