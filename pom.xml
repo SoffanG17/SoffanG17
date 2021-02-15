@@ -43,20 +43,32 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <!-- This needs to be included to allow maven-exec to properly
+         print to terminal.-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.0-alpha0</version>
+        </dependency>
+        <!-- To read CSV files, like reports from jacoco-maven-plugin -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
             <version>5.10.0.202012080955-r</version>
         </dependency>
-        <!-- This needs to be included to allow maven-exec to properly
-         print to terminal.-->
 
 
+        <dependency>
+            <groupId>org.apache.maven.shared</groupId>
+            <artifactId>maven-invoker</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+  
 
     </dependencies>
 
@@ -78,6 +90,26 @@
                     <executable>maven</executable>
                     <mainClass>Main</mainClass>
                 </configuration>
+            </plugin>
+            <!-- Code Coverage report generation -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-code-coverage-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
