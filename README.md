@@ -21,6 +21,8 @@ https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-a
 - Maven 3.6.3
 - ngrok 2.3.35
 
+Observe that Maven must be in your PATH environment variable and the path to Maven must additionally be specified manually in the Compiler.java file.
+
 ##### Commit template
 Issue-#[issueNr]-[Feat/Fix/Doc/Refac]-[Title]
 
