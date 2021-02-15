@@ -8,6 +8,9 @@ public class Compiler {
 
     static String mavenHomeAdress = "/usr/local/Cellar/maven/3.6.3_1/libexec";
 
+    /**
+     * This function sets the Maven home address later, the maven home address is used later in the compileMavenProject method.
+     * */
     public static void setMavenHomeAdress(String address){
         mavenHomeAdress = address;
     }
