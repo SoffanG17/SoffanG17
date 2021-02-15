@@ -10,6 +10,14 @@ import java.time.LocalDateTime;
 public class BuildHistory {
     public final static String BUILD_BASE_DIRECTORY = "./history/";
 
+    /**
+     * Creates a .txt file for a build, containing the specified buildInfo and naming it
+     * after the specified timestamp on the format yyyy_mm_dd_hh_mm_ss.txt , without padding zeros
+     * (i.e. the moth January is 1 and not 01). The files are put into the folder specified in
+     * BUILD_BASE_DIRECTORY, and such a directory is create if it does not already exist.
+     * @param buildInfo The contents of the file.
+     * @param timeStamp The time of the build.
+     */
     public static void addBuild(String buildInfo, LocalDateTime timeStamp) {
         String year= timeStamp.getYear() + "_";
         String month = timeStamp.getMonthValue() + "_";
