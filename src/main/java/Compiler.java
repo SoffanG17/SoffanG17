@@ -11,7 +11,13 @@ public class Compiler {
     public static void setMavenHomeAdress(String address){
         mavenHomeAdress = address;
     }
-
+    /**
+     * This functions compile a specified maven project. It return a string whether the build was successful or failed.
+     * For the method to work the HomeAddress to maven must be specified. This can be specified using Compiler.setMavenHomeAdress method.
+     *
+     * @param pomPath String path to were the pom-file for the maven project exists.
+     * @return String containing "Build Success" or "Build Failed" if the build failed succeeded and failed respectively
+     * */
     public static String compileMavenProject(String pomPath) throws MavenInvocationException, IOException {
 
         InvocationRequest request = new DefaultInvocationRequest();
