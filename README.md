@@ -16,7 +16,7 @@ https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-a
 
 #### Make the build-history availible through http
 ```
-cd [your project root path]//history
+cd [your project root path]/history
 python3 -m http.server 8000
 ```
 A list of  builds will be availible at http://[server-address]:8000
