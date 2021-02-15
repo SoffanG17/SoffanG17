@@ -11,13 +11,13 @@ public class BuildHistory {
     public final static String BUILD_BASE_DIRECTORY = "./history/";
 
     public static void addBuild(String buildInfo, LocalDateTime timeStamp) {
-        String yearDirectory = BUILD_BASE_DIRECTORY + timeStamp.getYear() + "/";
-        String monthDirectory = timeStamp.getMonthValue() + "/";
-        String dayDirectory = timeStamp.getDayOfMonth() + "/";
+        String year= timeStamp.getYear() + "_";
+        String month = timeStamp.getMonthValue() + "_";
+        String day = timeStamp.getDayOfMonth() + "_";
         String timeFileName = timeStamp.getHour() + "_" + timeStamp.getMinute() + "_" + timeStamp.getSecond() + ".txt";
-        String filePath = yearDirectory + monthDirectory + dayDirectory + timeFileName;
-        File dir = new File(yearDirectory + monthDirectory + dayDirectory);
-        Path dirPath = Paths.get(yearDirectory + monthDirectory + dayDirectory);
+        String filePath = BUILD_BASE_DIRECTORY + year + month + day + timeFileName;
+        File dir = new File(BUILD_BASE_DIRECTORY);
+        Path dirPath = Paths.get(BUILD_BASE_DIRECTORY);
         try {
             Files.createDirectories(dirPath);
         }
