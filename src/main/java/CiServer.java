@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -129,12 +130,16 @@ public class CiServer {
             buildResult = buildResult.replace("\n", "\\n");
             System.out.println(buildResult);
             //Comment the commit
+
             try{
 
                 apiClient.comment(commitId, buildResult);
             }catch (Exception e){
                 System.out.println("Error:"+e);
             }
+            LocalDateTime time = LocalDateTime.now();
+            buildResult = commitId + "\n" + time + "\n" + buildResult;
+            BuildHistory.addBuild(buildResult, time);
             RepositoryCloner.deleteRepo(new File(RepositoryCloner.tempDirectoryPath));
 
         }
