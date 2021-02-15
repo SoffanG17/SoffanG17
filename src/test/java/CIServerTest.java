@@ -47,6 +47,7 @@ public class CIServerTest{
             Assertions.assertTrue(false, "Server constructor threw exception: " + e.getMessage());
         }
 
+        Assertions.assertTrue(true);
 
 
     }
