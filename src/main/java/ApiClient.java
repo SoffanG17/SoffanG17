@@ -11,6 +11,9 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Class to send requests to GithubApi
+ */
 public class ApiClient {
 
     private HttpClient client;
@@ -28,6 +31,10 @@ public class ApiClient {
         Scanner myReader = new Scanner(tokenFile);
         outhToken = myReader.nextLine();
     }
+
+    /**
+     * Stops the HTTP-client
+     */
     public void stop(){
         try {
             client.stop();
@@ -36,6 +43,15 @@ public class ApiClient {
         }
     }
 
+    /**
+     * Comment a commit on github
+     * @param id The SHA/id of the commit
+     * @param comment Comment body
+     * @throws InterruptedException May be thrown
+     * @throws ExecutionException May be thrown
+     * @throws TimeoutException May be thrown
+     * @throws IOException May be thrown
+     */
     public void comment(String id, String comment) throws InterruptedException, ExecutionException, TimeoutException, IOException {
 
         org.eclipse.jetty.client.api.Request clientReq = client.newRequest("https://api.github.com/repos/SoffanG17/SoffanG17/commits/" + id + "/comments");
@@ -46,6 +62,10 @@ public class ApiClient {
         ;
 
         ContentResponse contResp = clientReq.send();
+
+        if(contResp.getContentAsString().contains("documentation_url")){
+            throw new IllegalArgumentException();
+        }
         System.out.println(contResp.getContentAsString());
 
 

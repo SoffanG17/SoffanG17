@@ -21,7 +21,11 @@ public class CiServer {
     private ApiClient apiClient;
     private Server server;
 
-
+    /**
+     * CI server
+     * @param port Port-number the server will use
+     * @throws Exception May be throw if something goes wrong
+     */
     CiServer(int port) throws Exception {
         apiClient = new ApiClient();
 
@@ -40,12 +44,25 @@ public class CiServer {
         // Start the Server so it starts accepting connections from clients.
         server.start();
     }
+
+    /**
+     * Waits while the server runs.
+     * @throws InterruptedException May be throw
+     */
     public void join() throws InterruptedException {
         server.join();
     }
 
     private class CiHandler extends AbstractHandler{
-
+        /**
+         * Handles incoming requests
+         * @param target See jetty Documentation
+         * @param baseRequest See jetty Documentation
+         * @param request See jetty Documentation
+         * @param response See jetty Documentation
+         * @throws IOException May be throw
+         * @throws ServletException May be throw
+         */
         @Override
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -65,7 +82,16 @@ public class CiServer {
             response.getWriter().println("CI job done");
         }
 
-        public void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException {
+        /**
+         * Parses input from a HttpServletRequest
+         * @param request HttpServletRequest
+         * @throws IOException May be throw
+         * @throws InterruptedException May be throw
+         * @throws ExecutionException May be throw
+         * @throws TimeoutException May be throw
+         * @throws GitAPIException  May be throw
+         */
+        private void ParseInput(HttpServletRequest request) throws IOException, InterruptedException, ExecutionException, TimeoutException, GitAPIException {
 
             String rawJson = request.getReader().readLine();
             System.out.println("Raw JSON: " + rawJson);
