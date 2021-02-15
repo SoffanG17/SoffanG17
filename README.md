@@ -14,12 +14,24 @@ Create a file named token.txt with your personal access token on the first row a
 How to create a token:
 https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
 
+#### Make the build-history availible through http
+```
+cd [your project root path]//history
+python3 -m http.server 8000
+```
+A list of  builds will be availible at http://[server-address]:8000
 
+Each build will be stored as a .txt-file with the following naming: yyyy_mm_dd_hh_mm_ss.txt. 
+OBS! numbers are not padded, eg. the fist of January will be 1_1, NOT 01_01.
+
+Each build can be accessed directly by http://[server-address]:8000/yyyy_mm_dd_hh_mm_ss.txt
+OBS! numbers are not padded, eg. the fist of January will be 1_1, NOT 01_01.
 
 ##### Dependancies
 - Java 15
 - Maven 3.6.3
 - ngrok 2.3.35
+- Python 3.xx
 
 Observe that Maven must be in your PATH environment variable and the path to Maven must additionally be specified manually in the Compiler.java file.
 
